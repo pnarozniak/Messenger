@@ -1,6 +1,5 @@
-using System.Reflection;
-using MediatR;
 using MessengerApi.Database;
+using MessengerApi.Services.TokenService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,10 +14,16 @@ builder.Services.AddSwaggerGen();
 //Configure and initialize db context
 builder.Services.AddDbContext<AppDbContext>(
     opt => opt.UseMySql(
-        builder.Configuration["MySql.ConnectionString"], 
-        new MySqlServerVersion(new Version(builder.Configuration["MySql.ServerVersion"]))
+        builder.Configuration["MySql:ConnectionString"], 
+        new MySqlServerVersion(new Version(builder.Configuration["MySql:ServerVersion"]))
     )
 );
+
+//Configure services
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+//Configure repositories
+
 
 var app = builder.Build();
 
