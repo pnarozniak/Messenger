@@ -30,6 +30,16 @@ namespace MessengerApi.Database.Configurations
             builder.Property(user => user.Birthdate)
                 .IsRequired()
                 .HasColumnType("date");
+
+            builder.Property(user => user.HashedPassword)
+                .IsRequired();
+
+            builder.Property(user => user.RefreshToken)
+                .IsRequired(false)
+                .HasMaxLength(36);
+
+            builder.Property(user => user.RefreshTokenExpiration)
+                .IsRequired(false);
         }
     }
 }
