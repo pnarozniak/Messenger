@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MessengerApi.Ef.Configurations
+namespace MessengerApi.Database.Configurations
 {
     public class UserEfConfiguration : IEntityTypeConfiguration<User>
     {

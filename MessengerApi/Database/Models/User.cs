@@ -1,4 +1,4 @@
-namespace MessengerApi.Ef
+namespace MessengerApi.Database
 {
     public class User 
     {

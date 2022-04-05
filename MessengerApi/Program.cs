@@ -1,4 +1,6 @@
-using MessengerApi.Ef;
+using System.Reflection;
+using MediatR;
+using MessengerApi.Database;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

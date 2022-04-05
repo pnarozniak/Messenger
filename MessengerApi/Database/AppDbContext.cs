@@ -1,7 +1,7 @@
-using MessengerApi.Ef.Configurations;
+using MessengerApi.Database.Configurations;
 using Microsoft.EntityFrameworkCore;
 
-namespace MessengerApi.Ef
+namespace MessengerApi.Database
 {
     public class AppDbContext : DbContext
     {
