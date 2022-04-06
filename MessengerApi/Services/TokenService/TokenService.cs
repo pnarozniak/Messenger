@@ -15,7 +15,7 @@ namespace MessengerApi.Services.TokenService
             _configuration = configuration;
         }
 
-        public string GeneratAccessToken(User user)
+        public string GenerateAccessToken(User user)
         {
             var userClaims = new List<Claim>
             {

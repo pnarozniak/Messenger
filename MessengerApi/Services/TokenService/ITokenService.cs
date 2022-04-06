@@ -5,8 +5,8 @@ namespace MessengerApi.Services.TokenService
 {
     public interface ITokenService
     {
-        public string GeneratAccessToken(User user);
-        public string GenerateRefreshToken();
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+        string GenerateAccessToken(User user);
+        string GenerateRefreshToken();
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }
