@@ -34,6 +34,9 @@ namespace MessengerApi.Database.Configurations
             builder.Property(user => user.HashedPassword)
                 .IsRequired();
 
+            builder.Property(user => user.RegisterConfirmationToken)
+                .IsRequired(false);
+                
             builder.Property(user => user.RefreshToken)
                 .IsRequired(false)
                 .HasMaxLength(36);

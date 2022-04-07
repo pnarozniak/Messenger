@@ -9,7 +9,8 @@ namespace MessengerApi.Database
         public string LastName { get; set; }
         public DateTime Birthdate { get; set; }
         
-        public string RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiration { get; set; }
+        public string? RegisterConfirmationToken {get; set;}
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiration { get; set; }
     }
 }

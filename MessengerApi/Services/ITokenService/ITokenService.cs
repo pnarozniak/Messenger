@@ -1,12 +1,14 @@
 using System.Security.Claims;
 using MessengerApi.Database;
+using MessengerApi.Helpers;
 
-namespace MessengerApi.Services.TokenService
+namespace MessengerApi.Services.ITokenService
 {
     public interface ITokenService
     {
         string GenerateAccessToken(User user);
-        string GenerateRefreshToken();
+        RefreshToken GenerateRefreshToken();
+        string GenerateRegisterConfirmationToken();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }
