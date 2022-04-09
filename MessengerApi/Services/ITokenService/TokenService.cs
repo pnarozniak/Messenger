@@ -64,7 +64,7 @@ namespace MessengerApi.Services.ITokenService
             return token;
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string accessToken)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -84,7 +84,7 @@ namespace MessengerApi.Services.ITokenService
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 principal = tokenHandler.ValidateToken(
-                    token, tokenValidationParameters, out SecurityToken outSecurityToken);
+                    accessToken, tokenValidationParameters, out SecurityToken outSecurityToken);
 
                 securityToken = outSecurityToken;
             }

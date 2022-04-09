@@ -5,6 +5,9 @@ using MessengerApi.Repositories.UserRepository;
 using MessengerApi.Services.ITokenService;
 using MessengerApi.Services.IEmailSender;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using MessengerApi.Helpers.Extensions;
 
 namespace MessengerApi.Controllers
 {
@@ -24,9 +27,15 @@ namespace MessengerApi.Controllers
             _userRepository = userRepository;
             _emailSender = emailSender;
         }
-        
+
+        /// <summary>
+        /// Login user
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]        
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             User user = await _userRepository.GetUserByEmailAsync(dto.Email);
             if (user is null)
@@ -41,12 +50,9 @@ namespace MessengerApi.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden);
 
             RefreshToken refreshToken = _tokenService.GenerateRefreshToken();
-            var isTokenSet = await _userRepository.SetUserRefreshTokenAsync(
-                user.Id, refreshToken);
-            if (!isTokenSet)
-                return StatusCode(StatusCodes.Status500InternalServerError);
+            await _userRepository.SetUserRefreshTokenAsync(user.Id, refreshToken);
 
-            var response = new LoginResponseDto()
+            var response = new TokensDto()
             {
                 RefreshToken = refreshToken.Value,
                 AccessToken = _tokenService.GenerateAccessToken(user)
@@ -55,7 +61,12 @@ namespace MessengerApi.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Register user in db and send register confirmation email
+        /// </summary>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
         {
             string confirmationToken = _tokenService.GenerateRegisterConfirmationToken();
@@ -69,17 +80,75 @@ namespace MessengerApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Confirm user registration via token
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> ConfirmRegister([FromBody] ConfirmRegisterRequestDto dto)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ConfirmRegister([FromBody] ConfirmRegisterDto dto)
         {
             User user = await _userRepository.GetUserByEmailAsync(dto.Email);
             if (user is null)
                 return NotFound();
 
-            if (user.RegisterConfirmationToken != dto.ConfirmationToken)
+            if (user.RegisterConfirmationToken != dto.RegisterConfirmationToken)
                 return NotFound();
 
             await _userRepository.MarkUserAsRegisteredAsync(user.Id);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Refresh user session by generating new access token
+        /// </summary>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> RefreshToken([FromBody] TokensDto dto)
+        {
+            ClaimsPrincipal principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
+            if (principal is null)
+                return Unauthorized();
+
+            int? userId = principal.GetId();
+            if (userId is null)
+                return Unauthorized();
+
+            User user = await _userRepository.GetUserByRefreshTokenAsync(dto.RefreshToken);
+            if (user is null || user.Id != userId) 
+                return Unauthorized();
+
+            RefreshToken refreshToken = _tokenService.GenerateRefreshToken();
+            await _userRepository.SetUserRefreshTokenAsync(user.Id, refreshToken);
+
+            var response = new TokensDto()
+            {
+                RefreshToken = refreshToken.Value,
+                AccessToken = _tokenService.GenerateAccessToken(user)
+            };
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Logout user by removing the refresh token from database
+        /// </summary>
+        [Authorize]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Logout([FromBody] LogoutDto dto)
+        {
+            User user = await _userRepository.GetUserByRefreshTokenAsync(dto.RefreshToken);
+            if (user is null)
+                return Unauthorized();
+
+            int userId = (int)HttpContext.User.GetId();
+            if (user.Id != userId) 
+                return Unauthorized();
+            
+            await _userRepository.SetUserRefreshTokenAsync(user.Id, null);
             return NoContent();
         }
     }

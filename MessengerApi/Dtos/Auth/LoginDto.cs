@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MessengerApi.Dtos.Auth
 {
-    public class LoginRequestDto
+    public class LoginDto
     {
         [Required]
         [EmailAddress]
@@ -12,11 +12,5 @@ namespace MessengerApi.Dtos.Auth
         [Required]
         [MaxLength(30)]
         public string PlainPassword { get; set; }
-    }
-
-    public class LoginResponseDto 
-    {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
     }
 }

@@ -35,17 +35,17 @@ namespace MessengerApi.Repositories.UserRepository
             return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<bool> SetUserRefreshTokenAsync(int idUser, RefreshToken refreshToken)
+        public async Task SetUserRefreshTokenAsync(int idUser, RefreshToken refreshToken = null)
         {
             var user = new User()
             {
                 Id = idUser,
-                RefreshToken = refreshToken.Value,
-                RefreshTokenExpiration = refreshToken.ExpirationDate
+                RefreshToken = refreshToken?.Value,
+                RefreshTokenExpiration = refreshToken?.ExpirationDate
             };
 
             _context.Entry(user).Property(u => new {u.RefreshToken, u.RefreshTokenExpiration}).IsModified = true;
-            return await _context.SaveChangesAsync() > 0;
+            await _context.SaveChangesAsync();
         }
 
         public async Task MarkUserAsRegisteredAsync(int idUser)
@@ -58,6 +58,11 @@ namespace MessengerApi.Repositories.UserRepository
 
             _context.Entry(user).Property(u => u.RegisterConfirmationToken).IsModified = true;
             await _context.SaveChangesAsync();
+        }
+
+        public Task<User> GetUserByRefreshTokenAsync(string refreshToken)
+        {
+            return _context.Users.SingleOrDefaultAsync(u => u.RefreshToken == refreshToken);
         }
     }
 }

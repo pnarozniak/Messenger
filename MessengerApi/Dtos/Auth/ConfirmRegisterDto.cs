@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MessengerApi.Dtos.Auth
 {
-    public class ConfirmRegisterRequestDto
+    public class ConfirmRegisterDto
     {
         [Required]
         [EmailAddress]
@@ -10,6 +10,6 @@ namespace MessengerApi.Dtos.Auth
         public string Email { get; set; }
 
         [Required]
-        public string ConfirmationToken { get; set; }
+        public string RegisterConfirmationToken { get; set; }
     }
 }
