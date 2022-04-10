@@ -31,7 +31,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Login user
         /// </summary>
-        [HttpPost]
+        [HttpPost("/login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]        
@@ -64,7 +64,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Register user in db and send register confirmation email
         /// </summary>
-        [HttpPost]
+        [HttpPost("/register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
@@ -83,7 +83,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Confirm user registration via token
         /// </summary>
-        [HttpPost]
+        [HttpPost("/confirm-register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ConfirmRegister([FromBody] ConfirmRegisterDto dto)
@@ -102,7 +102,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Refresh user session by generating new access token
         /// </summary>
-        [HttpPost]
+        [HttpPost("/refresh")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken([FromBody] TokensDto dto)
@@ -135,7 +135,7 @@ namespace MessengerApi.Controllers
         /// Logout user by removing the refresh token from database
         /// </summary>
         [Authorize]
-        [HttpPost]
+        [HttpPost("/logout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout([FromBody] LogoutDto dto)
