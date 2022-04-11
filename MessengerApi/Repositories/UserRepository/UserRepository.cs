@@ -14,20 +14,24 @@ namespace MessengerApi.Repositories.UserRepository
             _context = context;
         }
 
-        public async Task<User> CreateUserAsync(RegisterRequestDto registerDto, string registerConfirmationToken)
+        public async Task<User> CreateUserAsync(RegisterDto registerDto, string registerConfirmationToken)
         {
             var user = new User()
             {
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName, 
-                Birthdate = registerDto.Birthdate,
+                Birthdate = (DateTime)registerDto.Birthdate,
                 Email = registerDto.Email, 
                 RegisterConfirmationToken = registerConfirmationToken,
                 HashedPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.PlainPassword)
             };
-
-            await _context.Users.AddAsync(user);
-            return await _context.SaveChangesAsync() > 0 ? user : null;
+            
+            try {
+                await _context.Users.AddAsync(user);
+                return await _context.SaveChangesAsync() > 0 ? user : null;            }
+            catch (DbUpdateException) {
+                return null;
+            }
         }
 
         public async Task<User> GetUserByEmailAsync(string email)

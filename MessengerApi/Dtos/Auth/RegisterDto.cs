@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MessengerApi.Dtos.Auth
 {
-    public class RegisterRequestDto
+    public class RegisterDto
     {
         [Required]
         [MaxLength(32)]
@@ -14,7 +14,7 @@ namespace MessengerApi.Dtos.Auth
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         [Required]
         [EmailAddress]

@@ -12,7 +12,7 @@ using MessengerApi.Helpers.Extensions;
 namespace MessengerApi.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly ITokenService _tokenService;
@@ -31,7 +31,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Login user
         /// </summary>
-        [HttpPost("/login")]
+        [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]        
@@ -64,10 +64,10 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Register user in db and send register confirmation email
         /// </summary>
-        [HttpPost("/register")]
+        [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
             string confirmationToken = _tokenService.GenerateRegisterConfirmationToken();
             User createdUser = await _userRepository.CreateUserAsync(dto, confirmationToken);
@@ -83,7 +83,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Confirm user registration via token
         /// </summary>
-        [HttpPost("/confirm-register")]
+        [HttpPost("confirm-register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ConfirmRegister([FromBody] ConfirmRegisterDto dto)
@@ -102,7 +102,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Refresh user session by generating new access token
         /// </summary>
-        [HttpPost("/refresh")]
+        [HttpPost("refresh")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken([FromBody] TokensDto dto)
@@ -135,7 +135,7 @@ namespace MessengerApi.Controllers
         /// Logout user by removing the refresh token from database
         /// </summary>
         [Authorize]
-        [HttpPost("/logout")]
+        [HttpPost("logout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout([FromBody] LogoutDto dto)

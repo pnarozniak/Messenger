@@ -19,6 +19,9 @@ namespace MessengerApi.Database.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.HasIndex(user => user.Email)
+                .IsUnique();
+
             builder.Property(user => user.FirstName)
                 .IsRequired()
                 .HasMaxLength(32);

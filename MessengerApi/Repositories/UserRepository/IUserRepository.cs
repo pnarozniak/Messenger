@@ -24,8 +24,8 @@ namespace MessengerApi.Repositories.UserRepository
         /// </summary>
         /// <param name="registerDto">Register data transfer object</param>
         /// <param name="registerConfirmationToken">Generated reigster confirmation token</param>
-        /// <returns>Created user</returns>
-        Task<User> CreateUserAsync(RegisterRequestDto registerDto, string registerConfirmationToken);
+        /// <returns>Created user or null if not created</returns>
+        Task<User> CreateUserAsync(RegisterDto registerDto, string registerConfirmationToken);
 
         /// <summary>
         /// Confirms user registration

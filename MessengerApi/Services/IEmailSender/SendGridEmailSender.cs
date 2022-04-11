@@ -15,8 +15,9 @@ namespace MessengerApi.Services.IEmailSender
 
         public async Task SendRegisterConfirmationEmailAsync(string email, string confirmationToken)
         {
-            var emailMessage = $"<span>Your code is: <b>confirmationToken</b></span>";
-            await SendEmailAsync(email, "Finish your registration", emailMessage);
+            var emailMessage = $"<span>Your code is: <b>{confirmationToken}</b></span>";
+            var emailSubject = "Confirm your email to finish registration";
+            await SendEmailAsync(email, emailSubject, emailMessage);
         }
 
         private async Task SendEmailAsync(string email, string subject, string message)

@@ -1,7 +1,9 @@
 using MessengerApi.Database;
 using MessengerApi.Options;
+using MessengerApi.Repositories.UserRepository;
 using MessengerApi.Services.IEmailSender;
 using MessengerApi.Services.ITokenService;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +20,21 @@ builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("Token
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
 
 //Configure and initialize db context
-builder.Services.AddDbContext<AppDbContext>();
+MySqlOptions mySqlOptions = builder.Configuration.GetSection("MySql").Get<MySqlOptions>();
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options
+        .UseMySql(mySqlOptions.ConnectionString, ServerVersion.Parse(mySqlOptions.ServerVersion))
+        .LogTo(Console.WriteLine, LogLevel.Information)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors()
+);
 
 //Configure services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailSender, SendGridEmailSender>();
+
+//Configure repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
