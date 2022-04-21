@@ -37,7 +37,11 @@ namespace MessengerApi.Database.Configurations
             builder.Property(user => user.HashedPassword)
                 .IsRequired();
 
-            builder.Property(user => user.RegisterConfirmationToken)
+            builder.Property(user => user.IsVerified)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            builder.Property(user => user.EmailVerificationToken)
                 .IsRequired(false);
                 
             builder.Property(user => user.RefreshToken)

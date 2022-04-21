@@ -41,13 +41,19 @@ namespace MessengerApi.Controllers
             if (user is null)
                 return Unauthorized();
 
-            var isPasswordMatching = BCrypt.Net.BCrypt.Verify(
-                dto.PlainPassword, user.HashedPassword);
+            var isPasswordMatching = BCrypt.Net.BCrypt.Verify(dto.PlainPassword, user.HashedPassword);
             if (!isPasswordMatching)
                 return Unauthorized();
 
-            if (user.RegisterConfirmationToken is not null)
+            if (!user.IsVerified)
+            {
+                string confirmationToken = _tokenService.GenerateRegisterConfirmationToken();
+                await _userRepository.SetUserEmailVerificationTokenAsync(
+                    user.Id, confirmationToken);
+                await _emailSender.SendRegisterConfirmationEmailAsync(
+                    user.Email, confirmationToken);
                 return StatusCode(StatusCodes.Status403Forbidden);
+            }
 
             RefreshToken refreshToken = _tokenService.GenerateRefreshToken();
             await _userRepository.SetUserRefreshTokenAsync(user.Id, refreshToken);
@@ -62,20 +68,16 @@ namespace MessengerApi.Controllers
         }
 
         /// <summary>
-        /// Register user in db and send register confirmation email
+        /// Register user in db
         /// </summary>
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            string confirmationToken = _tokenService.GenerateRegisterConfirmationToken();
-            User createdUser = await _userRepository.CreateUserAsync(dto, confirmationToken);
+            User createdUser = await _userRepository.CreateUserAsync(dto);
             if (createdUser is null)
                 return Conflict();
-
-            await _emailSender.SendRegisterConfirmationEmailAsync(
-                createdUser.Email, confirmationToken);
             
             return NoContent();
         }
@@ -83,19 +85,19 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Confirm user registration via token
         /// </summary>
-        [HttpPost("confirm-register")]
+        [HttpPost("verify-email")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> ConfirmRegister([FromBody] ConfirmRegisterDto dto)
+        public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationDto dto)
         {
             User user = await _userRepository.GetUserByEmailAsync(dto.Email);
             if (user is null)
                 return NotFound();
 
-            if (user.RegisterConfirmationToken != dto.RegisterConfirmationToken)
+            if (user.EmailVerificationToken != dto.Token)
                 return NotFound();
 
-            await _userRepository.MarkUserAsRegisteredAsync(user.Id);
+            await _userRepository.MarkUserAsVerifiedAsync(user.Id);
             return NoContent();
         }
 

@@ -1,0 +1,21 @@
+<div [formGroup]="fg" class="info-container">
+    <mat-form-field appearance="outline">
+        <input matInput placeholder="E-mail" formControlName="email">
+        <mat-label>E-mail</mat-label>
+        <mat-error *ngIf="email?.errors?.['required']">Email is required.</mat-error>
+        <mat-error *ngIf="email?.errors?.['email']">Invalid e-mail.</mat-error>
+        <mat-error *ngIf="email?.errors?.['409']">Email is already taken.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <input matInput placeholder="Password" formControlName="password" type="password">
+        <mat-label>Password</mat-label>
+        <mat-error *ngIf="password?.errors?.['required']">Password is required.</mat-error>
+        <mat-error *ngIf="password?.errors?.['minlength']">Password must have at least 6 chars.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <input matInput placeholder="Confirm password" formControlName="confirmPassword" type="password">
+        <mat-label>Confirm password</mat-label>
+        <mat-error *ngIf="confirmPassword?.errors?.['required']">Confirm password is required.</mat-error>
+        <mat-error *ngIf="!confirmPassword?.errors?.['required'] && confirmPassword?.errors?.['equalto']">Passwords are not matching.</mat-error>
+    </mat-form-field>
+</div>

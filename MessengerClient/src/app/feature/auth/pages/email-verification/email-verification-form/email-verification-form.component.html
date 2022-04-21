@@ -1,0 +1,26 @@
+<form [formGroup]="fg" (ngSubmit)="verifyEmail()" #form>
+    <div class="input-group">
+        <mat-form-field appearance="outline">
+            <input matInput maxlength="1" (keydown)="handleKeyDown($event)" formControlName="field_1">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput maxlength="1" (keydown)="handleKeyDown($event)" formControlName="field_2">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput maxlength="1" (keydown)="handleKeyDown($event)" formControlName="field_3">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput maxlength="1" (keydown)="handleKeyDown($event)" formControlName="field_4">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput maxlength="1" (keydown)="handleKeyDown($event)" formControlName="field_5">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput maxlength="1" (keydown)="handleKeyDown($event)" formControlName="field_6">
+        </mat-form-field>
+    </div>
+    <button mat-flat-button color="primary">Submit</button>
+</form>
+<mat-error *ngIf="fg.errors?.['404']" class="summary-error">
+    Invalid code
+</mat-error>

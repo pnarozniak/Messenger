@@ -1,0 +1,24 @@
+:host {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .floating-container {
+        position: relative;
+        width: 450px;
+        background-color: black;
+        border-radius: 15px;
+        padding: 4rem;
+    }
+    
+    @media screen and (max-width: 650px) {
+        .floating-container {
+            border-radius: 0;
+            height: 100%;
+            flex-grow: 1;
+            box-sizing: border-box;
+        }
+    }
+}

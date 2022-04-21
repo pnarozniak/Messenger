@@ -14,7 +14,7 @@ namespace MessengerApi.Repositories.UserRepository
             _context = context;
         }
 
-        public async Task<User> CreateUserAsync(RegisterDto registerDto, string registerConfirmationToken)
+        public async Task<User> CreateUserAsync(RegisterDto registerDto)
         {
             var user = new User()
             {
@@ -22,7 +22,7 @@ namespace MessengerApi.Repositories.UserRepository
                 LastName = registerDto.LastName, 
                 Birthdate = (DateTime)registerDto.Birthdate,
                 Email = registerDto.Email, 
-                RegisterConfirmationToken = registerConfirmationToken,
+                IsVerified = false,
                 HashedPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.PlainPassword)
             };
             
@@ -36,7 +36,9 @@ namespace MessengerApi.Repositories.UserRepository
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task SetUserRefreshTokenAsync(int idUser, RefreshToken refreshToken = null)
@@ -48,19 +50,33 @@ namespace MessengerApi.Repositories.UserRepository
                 RefreshTokenExpiration = refreshToken?.ExpirationDate
             };
 
-            _context.Entry(user).Property(u => new {u.RefreshToken, u.RefreshTokenExpiration}).IsModified = true;
+            _context.Entry(user).Property(u => u.RefreshToken).IsModified = true;
+            _context.Entry(user).Property(u => u.RefreshTokenExpiration).IsModified = true;
             await _context.SaveChangesAsync();
         }
 
-        public async Task MarkUserAsRegisteredAsync(int idUser)
+        public async Task SetUserEmailVerificationTokenAsync(int idUser, string emailVerificaionToken)
         {
             var user = new User()
             {
                 Id = idUser,
-                RegisterConfirmationToken = null,
+                EmailVerificationToken = emailVerificaionToken
+            };
+
+            _context.Entry(user).Property(u => u.EmailVerificationToken).IsModified = true;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task MarkUserAsVerifiedAsync(int idUser)
+        {
+            var user = new User()
+            {
+                Id = idUser,
+                IsVerified = true,
+                EmailVerificationToken = null
             }; 
 
-            _context.Entry(user).Property(u => u.RegisterConfirmationToken).IsModified = true;
+            _context.Entry(user).Property(u => u.IsVerified).IsModified = true;
             await _context.SaveChangesAsync();
         }
 

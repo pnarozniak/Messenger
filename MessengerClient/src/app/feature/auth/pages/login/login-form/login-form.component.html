@@ -1,0 +1,18 @@
+<form [formGroup]="fg" (ngSubmit)="handleSubmit()">
+    <mat-form-field appearance="outline">
+        <input matInput placeholder="Email" formControlName="email">
+        <mat-label>Email</mat-label>
+        <mat-error *ngIf="email?.errors?.['required']">E-mail is required.</mat-error>
+        <mat-error *ngIf="email?.errors?.['email']">Not a valid e-mail.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <input matInput placeholder="Password" formControlName="password" type="password">
+        <mat-label>Password</mat-label>
+        <mat-error *ngIf="password?.errors?.['required']">Password is required.</mat-error>
+        <mat-error *ngIf="password?.errors?.['minlength']">Password must have at least 6 chars.</mat-error>
+    </mat-form-field>
+    <button mat-flat-button color="primary">Sign in</button>
+</form>
+<mat-error *ngIf="fg.errors?.['401']" class="summary-error">
+    Invalid e-mail or password.
+</mat-error>

@@ -1,0 +1,19 @@
+<app-floating-box>
+    <h1>Sign up</h1>
+    <mat-stepper linear #stepper >
+        <mat-step [stepControl]="step1InfoFormGroup">
+            <ng-template matStepLabel>Personal info</ng-template>
+            <app-register-step1-info #step1InfoComponent></app-register-step1-info>
+            <button mat-flat-button color="primary" matStepperNext>Next</button>
+        </mat-step>
+        <mat-step [stepControl]="step2InfoFormGroup">
+            <ng-template matStepLabel>Account info</ng-template>
+            <app-register-step2-info></app-register-step2-info>
+            <button mat-flat-button color="primary" matStepperNext (click)="handleRegister()">Sign up</button>
+        </mat-step>
+    </mat-stepper>
+    <span class="bottom-text">
+        Already have an account? 
+        <a [routerLink]="['/auth/login']">Sign in</a>
+    </span>
+</app-floating-box>

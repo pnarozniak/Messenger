@@ -20,18 +20,24 @@ namespace MessengerApi.Repositories.UserRepository
         Task SetUserRefreshTokenAsync(int idUser, RefreshToken refreshToken = null);
 
         /// <summary>
+        /// Sets user email verification token to given value
+        /// </summary>
+        /// <param name="emailVerificaionToken">Email verificaion token</param>
+        Task SetUserEmailVerificationTokenAsync(int idUser, string emailVerificaionToken);
+
+        /// <summary>
         /// Creates new user
         /// </summary>
         /// <param name="registerDto">Register data transfer object</param>
         /// <param name="registerConfirmationToken">Generated reigster confirmation token</param>
         /// <returns>Created user or null if not created</returns>
-        Task<User> CreateUserAsync(RegisterDto registerDto, string registerConfirmationToken);
+        Task<User> CreateUserAsync(RegisterDto registerDto);
 
         /// <summary>
-        /// Confirms user registration
+        /// Marks user as verified
         /// </summary>
         /// <param name="idUser">User id</param>
-        Task MarkUserAsRegisteredAsync(int idUser);
+        Task MarkUserAsVerifiedAsync(int idUser);
 
         /// <summary>
         /// Gets user by refresh token

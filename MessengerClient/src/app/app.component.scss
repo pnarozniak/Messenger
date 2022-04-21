@@ -1,0 +1,14 @@
+.App {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(28, 28, 28);
+
+    .page-content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

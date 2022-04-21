@@ -1,0 +1,15 @@
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    button {
+        margin-top: 1rem;
+        width: 100%;
+    }
+}
+
+.summary-error {
+    display: block;
+    margin-top: 1rem;
+}

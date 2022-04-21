@@ -1,0 +1,13 @@
+<app-floating-box>
+    <h1>Account verification</h1>
+    <span class="description">
+        A 6-digit verification code has been send to your e-mail address.
+        <br>
+        Please check your inbox and enter the code below to verify your e-mail address.
+    </span>
+    <app-email-verification-form></app-email-verification-form>
+    <span class="bottom-text">
+        Already verified? 
+        <a [routerLink]="['/auth/login']">Sign in</a>
+    </span>
+</app-floating-box>
