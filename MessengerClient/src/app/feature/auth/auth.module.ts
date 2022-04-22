@@ -19,6 +19,9 @@ import { AuthApiService } from './auth-api.service';
 import { EmailVerificationFormComponent } from './pages/email-verification/email-verification-form/email-verification-form.component';
 import { AuthTokensService } from './auth-tokens.service';
 import { EmailVerificationStateService } from './pages/email-verification/email-verification-state.service';
+import { AuthService } from './auth.service';
+import { AuthGuardService } from './auth-guard.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @NgModule({
     imports: [
@@ -30,7 +33,7 @@ import { EmailVerificationStateService } from './pages/email-verification/email-
         MatStepperModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        RouterModule
+        RouterModule,
     ],
     declarations: [
         LoginComponent,
@@ -45,6 +48,9 @@ import { EmailVerificationStateService } from './pages/email-verification/email-
     providers: [
         AuthApiService,
         AuthTokensService,
+        AuthService,
+        AuthGuardService,
+        JwtHelperService,
         EmailVerificationStateService
     ]
 })
