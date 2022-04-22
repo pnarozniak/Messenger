@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from './feature/auth/auth.module';
 import { CoreModule } from './core/core.module';
+import { ChatModule } from './feature/chat/chat.module';
 
 @NgModule({
   declarations: [
@@ -15,9 +16,10 @@ import { CoreModule } from './core/core.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AuthModule,
     RouterModule,
-    CoreModule
+    CoreModule,
+    AuthModule,
+    ChatModule
   ],
   providers: [],
   bootstrap: [AppComponent]
