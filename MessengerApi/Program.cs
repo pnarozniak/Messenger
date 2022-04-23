@@ -1,8 +1,10 @@
 using MessengerApi.Database;
 using MessengerApi.Options;
+using MessengerApi.Repositories.ChatRepository;
 using MessengerApi.Repositories.UserRepository;
 using MessengerApi.Services.IEmailSender;
 using MessengerApi.Services.ITokenService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,12 +26,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Configure options
+// Configure options
 builder.Services.Configure<MySqlOptions>(builder.Configuration.GetSection("MySql"));
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("Tokens"));
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
 
-//Configure and initialize db context
+// Configure and initialize db context
 MySqlOptions mySqlOptions = builder.Configuration.GetSection("MySql").Get<MySqlOptions>();
 builder.Services.AddDbContext<AppDbContext>(options => 
     options
@@ -39,12 +41,30 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         .EnableDetailedErrors()
 );
 
-//Configure services
+// Configure authentication 
+var accessTokenOptions = builder.Configuration.GetSection("Tokens").Get<TokenOptions>().AccessToken;
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = accessTokenOptions.ValidationParameters;
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = accessTokenOptions.HandleAuthenticationFailed,
+        };
+    });
+
+// Configure services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailSender, SendGridEmailSender>();
 
-//Configure repositories
+// Configure repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 
 var app = builder.Build();
 
@@ -58,6 +78,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowOrigins");
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

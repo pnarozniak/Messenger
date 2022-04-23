@@ -1,4 +1,3 @@
-using MessengerApi.Database;
 using MessengerApi.Dtos.Auth;
 using MessengerApi.Helpers;
 using MessengerApi.Repositories.UserRepository;
