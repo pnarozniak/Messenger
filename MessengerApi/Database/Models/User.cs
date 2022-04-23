@@ -16,7 +16,8 @@ namespace MessengerApi.Database.Models
         public ICollection<Blockade> CreatedBlockades { get; set; }
         public ICollection<Blockade> ReceivedBlockades { get; set; }
 
-        public ICollection<Friendship> Friendships { get; set; }
+        public ICollection<Friendship> FriendshipsWhereIsUser1 { get; set; }
+        public ICollection<Friendship> FriendshipsWhereIsUser2 { get; set; }
 
         public ICollection<FriendshipRequest> SentFriendshipRequests { get; set; }
         public ICollection<FriendshipRequest> ReceivedFriendshipRequests { get; set; }

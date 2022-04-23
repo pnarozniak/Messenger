@@ -5,9 +5,9 @@ namespace MessengerApi.Database.Models
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public int IdRequester { get; set; }
-        public User IdRequesterNavigation { get; set; }
-        public int IdAddressee { get; set; }
-        public User IdAddresseeNavigation { get; set; }
+        public int IdUser1 { get; set; }
+        public User IdUser1Navigation { get; set; }
+        public int IdUser2 { get; set; }
+        public User IdUser2Navigation { get; set; }
     }
 }

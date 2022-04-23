@@ -20,20 +20,20 @@ namespace MessengerApi.Database.Configurations
                 .HasColumnType("TIMESTAMP")
                 .IsRequired();
 
-            builder.Property(f => f.IdRequester)
+            builder.Property(f => f.IdUser1)
                 .IsRequired();
 
-            builder.Property(f => f.IdAddressee)
+            builder.Property(f => f.IdUser2)
                 .IsRequired();
 
-            builder.HasOne(f => f.IdRequesterNavigation)
-                .WithMany(u => u.Friendships)
-                .HasForeignKey(f => f.IdRequester)
+            builder.HasOne(f => f.IdUser1Navigation)
+                .WithMany(u => u.FriendshipsWhereIsUser1)
+                .HasForeignKey(f => f.IdUser1)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(f => f.IdAddresseeNavigation)
-                .WithMany(u => u.Friendships)
-                .HasForeignKey(f => f.IdAddressee)
+            builder.HasOne(f => f.IdUser2Navigation)
+                .WithMany(u => u.FriendshipsWhereIsUser2)
+                .HasForeignKey(f => f.IdUser2)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
