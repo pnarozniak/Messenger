@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using MessengerApi.Helpers.Extensions;
+using MessengerApi.Database.Models;
 
 namespace MessengerApi.Controllers
 {

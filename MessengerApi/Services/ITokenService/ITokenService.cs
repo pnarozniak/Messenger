@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using MessengerApi.Database;
+using MessengerApi.Database.Models;
 using MessengerApi.Helpers;
 
 namespace MessengerApi.Services.ITokenService

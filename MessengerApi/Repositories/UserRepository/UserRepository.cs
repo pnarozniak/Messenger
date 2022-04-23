@@ -1,4 +1,5 @@
 using MessengerApi.Database;
+using MessengerApi.Database.Models;
 using MessengerApi.Dtos.Auth;
 using MessengerApi.Helpers;
 using Microsoft.EntityFrameworkCore;
