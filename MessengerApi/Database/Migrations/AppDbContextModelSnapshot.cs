@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MessengerApi.Migrations
+namespace MessengerApi.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -65,58 +65,6 @@ namespace MessengerApi.Migrations
                     b.ToTable("Chat", (string)null);
                 });
 
-            modelBuilder.Entity("MessengerApi.Database.Models.Friendship", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("TIMESTAMP");
-
-                    b.Property<int>("IdUser1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUser2")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id")
-                        .HasName("PK_Friendship");
-
-                    b.HasIndex("IdUser1");
-
-                    b.HasIndex("IdUser2");
-
-                    b.ToTable("Friendship", (string)null);
-                });
-
-            modelBuilder.Entity("MessengerApi.Database.Models.FriendshipRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("TIMESTAMP");
-
-                    b.Property<int>("IdReceiver")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdSender")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id")
-                        .HasName("PK_FriendshipRequest");
-
-                    b.HasIndex("IdReceiver");
-
-                    b.HasIndex("IdSender");
-
-                    b.ToTable("Friendship_Request", (string)null);
-                });
-
             modelBuilder.Entity("MessengerApi.Database.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -129,6 +77,11 @@ namespace MessengerApi.Migrations
 
                     b.Property<int>("IdUser")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsRemoved")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("SendDate")
                         .HasColumnType("datetime(6)");
@@ -242,44 +195,6 @@ namespace MessengerApi.Migrations
                     b.Navigation("IdBlockerNavigation");
                 });
 
-            modelBuilder.Entity("MessengerApi.Database.Models.Friendship", b =>
-                {
-                    b.HasOne("MessengerApi.Database.Models.User", "IdUser1Navigation")
-                        .WithMany("FriendshipsWhereIsUser1")
-                        .HasForeignKey("IdUser1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MessengerApi.Database.Models.User", "IdUser2Navigation")
-                        .WithMany("FriendshipsWhereIsUser2")
-                        .HasForeignKey("IdUser2")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IdUser1Navigation");
-
-                    b.Navigation("IdUser2Navigation");
-                });
-
-            modelBuilder.Entity("MessengerApi.Database.Models.FriendshipRequest", b =>
-                {
-                    b.HasOne("MessengerApi.Database.Models.User", "IdReceiverNavigation")
-                        .WithMany("ReceivedFriendshipRequests")
-                        .HasForeignKey("IdReceiver")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MessengerApi.Database.Models.User", "IdSenderNavigation")
-                        .WithMany("SentFriendshipRequests")
-                        .HasForeignKey("IdSender")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IdReceiverNavigation");
-
-                    b.Navigation("IdSenderNavigation");
-                });
-
             modelBuilder.Entity("MessengerApi.Database.Models.Message", b =>
                 {
                     b.HasOne("MessengerApi.Database.Models.Chat", "IdChatNavigation")
@@ -329,15 +244,7 @@ namespace MessengerApi.Migrations
                 {
                     b.Navigation("CreatedBlockades");
 
-                    b.Navigation("FriendshipsWhereIsUser1");
-
-                    b.Navigation("FriendshipsWhereIsUser2");
-
                     b.Navigation("ReceivedBlockades");
-
-                    b.Navigation("ReceivedFriendshipRequests");
-
-                    b.Navigation("SentFriendshipRequests");
 
                     b.Navigation("SentMessages");
 

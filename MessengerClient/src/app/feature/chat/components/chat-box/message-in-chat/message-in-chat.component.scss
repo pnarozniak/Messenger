@@ -1,0 +1,87 @@
+.message { 
+    margin-bottom: 4px;
+    .message-sender-name {
+        margin-left: calc(32px + calc(.8rem * 2));
+        opacity: 0.5;
+        font-size: 12px;
+    }
+    .message-content {
+        &.sent {
+            margin-left: auto;
+        }
+        &:hover {
+            .message-options {
+                visibility: visible;
+            }
+        }
+        .message-sender-avatar {
+            border-radius: 50%;
+            background-color: rgb(138, 138, 138);
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            margin-right: .8rem;
+            &.hidden {
+                visibility: hidden;
+            }
+        }
+        .message-options {
+            visibility: hidden;
+            
+            .mat-icon {
+                border-radius: 50%;
+                width: 32px;
+                min-width: 32px;
+                height: 32px;   
+                display: flex;
+                justify-content: center;
+                align-items: center;            
+                margin: 0 .5rem;
+                outline: none !important;
+                cursor: pointer;
+                
+                &:hover {
+                    background-color: rgb(55, 54, 54);
+                }
+            }
+        }
+        .message-text-wrapper {
+            padding: 0 1rem;
+            border-radius: 30px;
+            min-height: 32px;
+            box-sizing: border-box;
+
+            &.sent {
+                background-color: rgb(29, 115, 227);
+            }
+            &.received {
+                background-color: rgb(37, 36, 36);
+            }
+            &.removed {
+                opacity: 0.5;
+            }
+            &.pending {
+                margin-left: auto;
+                background-color: rgb(29, 115, 227);
+                animation: background-fade 500ms forwards;
+                @keyframes background-fade {
+                    99.9% {
+                        opacity: 1;
+                    }
+                    100% {
+                        opacity: 0.3;
+                    }
+                }
+            }
+        }
+    }
+}
+
+::ng-deep .mat-menu-content {
+    padding: 0 !important;
+}
+
+::ng-deep .mat-menu-panel {
+    display: flex !important;
+    align-items: center !important;
+}

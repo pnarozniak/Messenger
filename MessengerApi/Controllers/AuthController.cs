@@ -104,7 +104,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Refresh user session by generating new access token
         /// </summary>
-        [HttpPost("refresh")]
+        [HttpPost("refresh-token")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken([FromBody] TokensDto dto)

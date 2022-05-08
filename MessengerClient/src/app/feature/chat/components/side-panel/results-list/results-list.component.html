@@ -1,0 +1,62 @@
+<ul class="list">
+    <ng-container *ngIf="showChatsFromState">
+        <!-- List of chats from app -->
+        <li *ngFor="let chat of chatStateService.chats" class="item">
+            <app-chat-in-list [chat]="chat"></app-chat-in-list>
+        </li>
+
+        <!-- Load more chats -->
+        <ng-container>
+            <li *ngIf="!allChatsAreLoaded && chatStateService.chats.length > 0" 
+                class="item row center">
+                <button mat-button (click)="loadMoreChats()">Load more...</button>
+            </li>
+            <li *ngIf="allChatsAreLoaded" class="item row center">
+                <span>All chats are visible.</span>
+            </li>
+        </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="lastSearchPhrase !== ''">
+        <!-- List of group chats -->
+        <li class="list-section" *ngIf="showChatSections">
+            <span>Group chats</span>
+        </li>
+        <ng-container *ngFor="let chat of searchedChats">
+            <li *ngIf="!chat.isPrivate" class="item">
+                <app-chat-in-list [chat]="chat"></app-chat-in-list>
+            </li>
+        </ng-container>
+
+        <!-- List of private chats -->
+        <li class="list-section" *ngIf="showChatSections">
+            <span>Private chats</span>
+        </li>
+        <ng-container *ngFor="let chat of searchedChats">
+            <li *ngIf="chat.isPrivate" class="item">
+                <app-chat-in-list [chat]="chat"></app-chat-in-list>
+            </li>
+        </ng-container>
+
+        <!-- List of more people -->
+        <li *ngFor="let person of searchedMorePeople" class="item">
+            <app-user-in-list [user]="person"></app-user-in-list>
+        </li>
+    </ng-container>
+    
+    <!-- Error  -->
+    <ng-container *ngIf="showErrorSection"
+        [ngTemplateOutlet]="errorTemplate"
+        [ngTemplateOutletContext]="{error: searchError}">
+    </ng-container>
+</ul>
+
+<ng-template #errorTemplate let-error="error">
+    <li class="item row center">
+        <div class="row center">
+            <span>
+                {{ error ?? 'Results not found'}}
+            </span>
+        </div>
+    </li>
+</ng-template>

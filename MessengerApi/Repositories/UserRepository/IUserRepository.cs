@@ -1,6 +1,7 @@
 using MessengerApi.Database;
 using MessengerApi.Database.Models;
 using MessengerApi.Dtos.Auth;
+using MessengerApi.Dtos.Search;
 using MessengerApi.Helpers;
 
 namespace MessengerApi.Repositories.UserRepository
@@ -46,5 +47,15 @@ namespace MessengerApi.Repositories.UserRepository
         /// <param name="refreshToken">Refresh token</param>
         /// <returns>User or null if not found</returns>
         Task<User> GetUserByRefreshTokenAsync(string refreshToken);
+
+        /// <summary>
+        /// Gets users for given user by given search phrase
+        /// </summary>
+        /// <param name="idUser">Id of user requesting data</param>
+        /// <param name="skipCount">Records to skip</param>
+        /// <param name="takeCount">Records to take</param>
+        /// <param name="searchPhrase">Search phrase</param>
+        /// <returns>Users or empty list if none are found</returns>
+        Task<IEnumerable<SingleUserDto>> GetUsersForUserAsync(int idUser, int skipCount, int takeCount, string searchPhraze);
     }
 }

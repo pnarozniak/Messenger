@@ -1,5 +1,66 @@
 @import '~ngx-toastr/toastr';
+@import '~@ctrl/ngx-emoji-mart/picker';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; color: #fff;}
 a{ text-decoration: none;}
+ul { list-style: none; padding: 0; margin: 0;}
+
+.row {
+    display: flex;
+    flex-direction: row;
+
+    &.center-h {
+        justify-content: center;
+    }
+
+    &.center-v {
+        align-items: center;
+    }
+
+    &.center {
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+
+    &.center-h {
+        justify-content: center;
+    }
+
+    &.center-v {
+        align-items: center;
+    }
+    
+    &.center {
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.avatar {
+    border-radius: 50%;
+    background-color: rgb(138, 138, 138);
+
+    &.small {
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+    }
+
+    &.medium {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+    }
+
+    &.large {
+        width: 48px;
+        min-width: 48px;
+        height: 48px;
+    }
+}

@@ -1,0 +1,19 @@
+.chat-box-header {
+    height: 40px;
+    padding: 0 3rem;
+    
+    .input-wrapper {
+        width: 100%;
+        margin-left: 1rem;
+
+        input {
+            max-width: 300px;
+        }
+        ::ng-deep .mat-chip {
+            width: auto;
+        }
+        ::ng-deep .mat-chip-list-wrapper {
+            justify-content: flex-start;
+        }
+    }
+}

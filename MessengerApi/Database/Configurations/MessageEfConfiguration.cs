@@ -21,6 +21,10 @@ namespace MessengerApi.Database.Configurations
 
             builder.Property(m => m.SendDate)
                 .IsRequired();
+
+            builder.Property(m => m.IsRemoved)
+                .IsRequired()
+                .HasDefaultValue(false);
             
             builder.Property(m => m.IdChat)
                 .IsRequired();

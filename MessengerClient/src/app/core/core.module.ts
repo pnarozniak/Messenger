@@ -1,11 +1,10 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { HttpClientModule } from "@angular/common/http";
-import { ApiService } from "./services/api.service";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ToastrModule } from "ngx-toastr";
-import { AlertsService } from "./services/alerts.service";
-import { JwtModule } from "@auth0/angular-jwt";
-import { AuthTokensService } from "../feature/auth/auth-tokens.service";
+import { JwtHelperService, JwtModule } from "@auth0/angular-jwt";
+import { NotAuthorizedInterceptor } from "./interceptors/not-authorized.interceptor";
+import { AuthTokensService } from "./services/auth-tokens.service";
 
 @NgModule({
     imports: [
@@ -14,15 +13,15 @@ import { AuthTokensService } from "../feature/auth/auth-tokens.service";
         ToastrModule.forRoot(),
         JwtModule.forRoot({
             config: {
-                tokenGetter: () => new AuthTokensService().getAccessToken(),
+                tokenGetter: () => new AuthTokensService().getTokens().accessToken,
                 allowedDomains: ["localhost:7009"],
                 disallowedRoutes: ["https://localhost:7009/api/auth/"],
             },
         })
     ],
     providers: [
-        ApiService,
-        AlertsService
+        JwtHelperService,
+        { provide: HTTP_INTERCEPTORS, useClass: NotAuthorizedInterceptor, multi: true }
     ],
     exports: [
         HttpClientModule

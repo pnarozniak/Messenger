@@ -1,10 +1,15 @@
 using MessengerApi.Database;
+using MessengerApi.Helpers.Providers;
+using MessengerApi.Hubs;
+using MessengerApi.Middlewares;
 using MessengerApi.Options;
 using MessengerApi.Repositories.ChatRepository;
 using MessengerApi.Repositories.UserRepository;
 using MessengerApi.Services.IEmailSender;
 using MessengerApi.Services.ITokenService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,15 +21,26 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins("http://localhost:4200")
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
+                    .AllowCredentials()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
         });
 });
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add SignalR
+builder.Services.AddSignalR();
+builder.Services.AddResponseCompression(opts =>
+    {
+        opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            new[] { "application/octet-stream" });
+    });
+
 
 // Configure options
 builder.Services.Configure<MySqlOptions>(builder.Configuration.GetSection("MySql"));
@@ -61,12 +77,17 @@ builder.Services.AddAuthentication(options => {
 // Configure services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailSender, SendGridEmailSender>();
+builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
 // Configure repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 
 var app = builder.Build();
+
+app.UseRouting();
+
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -79,10 +100,16 @@ app.UseCors("AllowOrigins");
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<SignalRAuthMiddleware>();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+// Configure SignalR and controllers
+app.UseEndpoints(endpoints =>{
+    endpoints.MapControllers();
+    endpoints.MapHub<NotificationsHub>("/hubs/notifications");
+});
 
 app.Run();

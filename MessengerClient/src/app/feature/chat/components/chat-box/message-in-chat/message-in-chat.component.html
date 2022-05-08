@@ -1,0 +1,27 @@
+<div class="col message center-h">
+    <span class="message-sender-name" *ngIf="!isOwnMessage && !isPreviousMessageFromSameUser">
+        {{ message.sender.firstName }}
+    </span>
+    <div class="message-content row center-v" [ngClass]="{'sent': isOwnMessage}">
+        <img class="message-sender-avatar" *ngIf="!isOwnMessage" 
+        [ngClass]="{'hidden': isPreviousMessageFromSameUser}" />
+        <div class="row center" class="message-options" *ngIf="isOwnMessage && !message.isRemoved">
+            <mat-icon [matMenuTriggerFor]="messageOptionsMenu">
+                more_vert
+            </mat-icon>
+        </div>
+        <mat-menu #messageOptionsMenu="matMenu">
+            <button mat-menu-item (click)="deleteMessage()">
+              <mat-icon>delete</mat-icon>
+              <span>Delete message</span>
+            </button>
+        </mat-menu>
+        <div class="message-text-wrapper row center" [ngClass]="{
+        'sent': message.sender.id == loggedUserId, 'received': message.sender.id != loggedUserId,
+        'removed': message.isRemoved, 'pending': !message.id}">
+            <span>
+                {{message.isRemoved ? 'Message removed.' : message.text}}
+            </span>
+        </div>
+    </div>
+</div>

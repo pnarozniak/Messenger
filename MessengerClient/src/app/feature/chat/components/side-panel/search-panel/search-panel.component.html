@@ -1,0 +1,26 @@
+<div class="row center-v">
+    <img class="avatar small">
+    <h2 class="title">{{ activeOption }}</h2>
+    <mat-icon aria-hidden="false" aria-label="New chat icon" class="add-chat-btn"
+        [routerLink]="['/chat/new']" [routerLinkActive]="'active'">
+        note_add
+    </mat-icon>
+</div>
+<mat-form-field appearance="outline" class="search-input"
+    (keyup)="handleSearchKeyUp($event)">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="phrase">
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+<mat-chip-list aria-label="Fish selection" class="row">
+    <mat-chip color="primary" class="row center"
+        [selected]="activeOption == searchOptionEnum.CHATS" 
+        (click)="setSearchOption(searchOptionEnum.CHATS)">
+        Chats
+    </mat-chip>
+    <mat-chip color="primary" class="row center" 
+        [selected]="activeOption == searchOptionEnum.MORE_PEOPLE" 
+        (click)="setSearchOption(searchOptionEnum.MORE_PEOPLE)">
+        More people
+    </mat-chip> 
+</mat-chip-list>

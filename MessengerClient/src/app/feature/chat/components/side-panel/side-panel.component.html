@@ -1,0 +1,22 @@
+<div class="wrapper col">
+    <div class="search-panel-wrapper">
+        <app-search-panel 
+            [(isSearching)]="isSearching"
+            [(activeOption)]="activeSearchOption"
+            [chatsFetchedCallback]="onChatsSearched"
+            [morePeopleFetchedCallback]="onMorePeopleSearached"
+            [beforeEverySearchCallback]="beforeEverySearch"
+            [afterEverySearchCallback]="afterEverySearch">
+        </app-search-panel>
+    </div>
+    <app-results-list
+        [isSearching]="isSearching"
+        [allChatsAreLoaded]="allChatsLoaded"
+        [activeSearchOption]="activeSearchOption"
+        [lastSearchPhrase]="lastSearchPhrase"
+        [searchError]="searchError"
+        [searchedMorePeople]="results.morePeople"
+        [searchedChats]="results.chats"
+        [loadMoreChatsCallback]="loadMoreChat">
+    </app-results-list>
+</div>
