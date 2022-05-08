@@ -1,0 +1,45 @@
+$item-height: 80px;
+$item-padding: 10px;
+
+.chat-in-list {
+    height: calc($item-height - 2 * $item-padding);
+    border-radius: 35px;
+    padding: 0 .8rem;
+    cursor: pointer;
+    outline: none;
+    &.active-chat {
+        background-color: rgb(55, 54, 54);
+    }
+    &:hover {
+        background-color: rgb(55, 54, 54);
+    }
+    .chat-info {
+        flex-grow: 1;
+        overflow: hidden;
+        margin-left: .8rem;
+        .chat-name {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &.error {
+               color: rgb(194, 24, 91);
+            }
+        }
+        .last-message-wrapper {
+            color: rgb(138, 138, 138);
+            .last-message-text {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .last-message-send-date {
+                white-space: nowrap;
+                margin-left: 4px;
+                display: block;
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+$item-height: 80px;
+$item-padding: 10px;
+
+.list {
+    overflow: scroll;
+    flex-grow: 1;
+    .list-section {
+        margin: 1rem 1rem 0 1rem;
+        color: rgb(138, 138, 138);
+    }
+    .item {
+        height: $item-height;
+        padding: $item-padding;
+        box-sizing: border-box;
+        border-bottom: 1px solid rgba(138, 138, 138, 0.412);
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}

@@ -1,20 +1,37 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { API_URL } from "src/app/app-globals";
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class ApiService {
-    private readonly api_base_url: string = 'https://localhost:7009/api/';
-
     constructor(private http: HttpClient) {}
 
     post<T, R>(url: string, data: T): Observable<R> {
-        const reqUrl: string = this.api_base_url + url;
-        console.log("post to" + reqUrl);
-        return this.http.post<R>(reqUrl, data).pipe(
-            catchError(this.handleError)
-        );
+        const reqUrl: string = API_URL + '/' + url;
+
+        return this.http
+          .post<R>(reqUrl, data)
+          .pipe(catchError(this.handleError));
+    }
+
+    get<R>(url: string, params: HttpParams | undefined): Observable<R> {
+        const reqUrl: string = API_URL + '/' + url;
+
+        return this.http
+          .get<R>(reqUrl, {params: params ?? {}})
+          .pipe(catchError(this.handleError));
+    }
+
+    delete(url: string): Observable<any> {
+        const reqUrl: string = API_URL + '/' + url;
+
+        return this.http
+          .delete(reqUrl)
+          .pipe(catchError(this.handleError));
     }
 
     private handleError(error: HttpErrorResponse) : Observable<never> {
@@ -23,7 +40,7 @@ export class ApiService {
         else
           console.error(
             `Backend returned code ${error.status}, body was: `, error.error);
-
+            
         return throwError(() => error);
-      }
+    }
 }

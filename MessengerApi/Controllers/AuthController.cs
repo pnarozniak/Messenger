@@ -1,4 +1,3 @@
-using MessengerApi.Database;
 using MessengerApi.Dtos.Auth;
 using MessengerApi.Helpers;
 using MessengerApi.Repositories.UserRepository;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using MessengerApi.Helpers.Extensions;
+using MessengerApi.Database.Models;
 
 namespace MessengerApi.Controllers
 {
@@ -104,7 +104,7 @@ namespace MessengerApi.Controllers
         /// <summary>
         /// Refresh user session by generating new access token
         /// </summary>
-        [HttpPost("refresh")]
+        [HttpPost("refresh-token")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokensDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken([FromBody] TokensDto dto)

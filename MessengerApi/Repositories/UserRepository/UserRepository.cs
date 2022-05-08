@@ -1,5 +1,7 @@
 using MessengerApi.Database;
+using MessengerApi.Database.Models;
 using MessengerApi.Dtos.Auth;
+using MessengerApi.Dtos.Search;
 using MessengerApi.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,7 +84,26 @@ namespace MessengerApi.Repositories.UserRepository
 
         public Task<User> GetUserByRefreshTokenAsync(string refreshToken)
         {
-            return _context.Users.SingleOrDefaultAsync(u => u.RefreshToken == refreshToken);
+            return _context.Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken);
+        }
+
+        public async Task<IEnumerable<SingleUserDto>> GetUsersForUserAsync(int idUser, int skipCount, int takeCount, string searchPhraze)
+        {
+            return await _context.Users
+                .Where(u => u.Id != idUser)
+                .Where(u => (u.FirstName + u.LastName).Contains(searchPhraze))
+                .OrderBy(u => u.FirstName)
+                .ThenBy(u => u.LastName)
+                .Skip(skipCount)
+                .Take(takeCount)
+                .Select(u => new SingleUserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                }).ToListAsync();
         }
     }
 }

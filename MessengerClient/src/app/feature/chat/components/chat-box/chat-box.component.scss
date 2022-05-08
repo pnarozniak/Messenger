@@ -1,0 +1,75 @@
+.chat-box {
+    width: 100%;
+    height: 100%;
+    .chat-box-header {
+        padding: 1rem 0;
+    }
+    .chat-box-messages {
+        flex-grow: 1;
+        padding: 1rem;
+        overflow: scroll;
+    }
+    .message-files-wrapper {
+        padding: 1rem 2rem;
+        width: 100%;
+        box-sizing: border-box;
+
+        
+        .message-files {
+            width: 100%;
+            overflow: scroll;
+            white-space: nowrap;
+
+            .file {
+                display: inline-block;
+                padding: 1rem;
+                background-color: #252424;
+                border-radius: 10px;
+                margin: 0 0.5rem;
+                position: relative;
+    
+                .remove-btn {
+                    color: indianred;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    
+                    &:hover {
+                        opacity: 0.5;
+                    }
+                }
+            }
+        }
+    }
+    .chat-box-input-wrapper {
+        padding: .5rem 2rem;
+        .search-input {
+            width: 100%;
+            border-radius: 25px;
+            background-color: #252424;
+            padding: .5rem 1rem;
+            input {
+                border-radius: 30px;
+            }
+            &::ng-deep .mat-form-field-wrapper {
+                padding: 0;
+            }
+        }
+        .mat-icon {
+            border-radius: 50%;
+            padding: 8px;
+            margin: 0 .5rem;
+            outline: none !important;
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(55, 54, 54);
+            }
+        }
+    }
+}
+
+::ng-deep .mat-menu-content {
+    padding-top: 0 !important;
+    max-height: 260px;
+}

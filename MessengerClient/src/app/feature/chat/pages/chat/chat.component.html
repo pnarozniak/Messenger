@@ -1,1 +1,14 @@
-<p>chat works!</p>
+<app-chat-box [(messages)]="messages"
+    [id]="idChat"
+    [messageSendCallback]="sendMessage"
+    [messageDeleteCallback]="deleteMessage"
+    [loadMoreMessagesCount]="REQUESTED_MESSAGES_COUNT"
+    [loadMoreMessagesCallback]="messages.length >= 25 ? loadMoreMessages : undefined">
+    <div class="chat-box-header row center-v">
+        <img class="chat-avatar"/>
+        <h3 class="chat-title">{{ chatInfo.name }}</h3>
+        <mat-icon aria-hidden="false" aria-label="Chat settings icon" class="chat-settings-btn">
+            more_vert
+        </mat-icon>
+    </div>
+</app-chat-box>

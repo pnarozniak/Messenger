@@ -1,1 +1,50 @@
-<p>chat-box works!</p>
+<div class="chat-box col">
+    <div class="chat-box-header">
+        <ng-content></ng-content>
+    </div>
+    <ul class="chat-box-messages" #messagesList>
+        <div class="row center message-wrapper" *ngIf="loadMoreMessagesCallback">
+            <button mat-button *ngIf="!allMessagesLoaded" (click)="loadMoreMessages()">
+                Load more...
+            </button>
+            <span *ngIf="allMessagesLoaded">
+                All messages are visible.
+            </span>
+        </div>
+        <li *ngFor="let message of messages?.reverse(); index as i">
+            <app-message-in-chat 
+            [message]="message" [previousMessage]="messages?.[i-1]" [loggedUserId]="loggedUserId"
+            [deleteMessageCallback]="deleteMessage">
+            </app-message-in-chat>
+        </li>
+    </ul>
+    <div *ngIf="messageFiles.length > 0" class="message-files-wrapper">
+        <div  class="message-files">
+            <div *ngFor="let file of messageFiles" class="file">
+                <mat-icon>insert_drive_file</mat-icon>
+                <span>{{file?.name?.split('.')?.pop()}}</span>
+                <mat-icon class="remove-btn" (click)="removeFile(file)">clear</mat-icon>
+            </div>
+        </div>
+    </div>
+    <div class="chat-box-input-wrapper row center">
+        <mat-icon [matMenuTriggerFor]="emojiMenu">mood</mat-icon>
+        <input matInput placeholder="Type a message..." class="search-input"
+            [(ngModel)]="messageTextInput" (keyup.enter)="sendMessage()" >
+        <mat-icon (click)="fileUploadInput.click()">collections</mat-icon>
+        <input type="file" multiple="multiple" class="file-input" 
+            (change)="addFile($event)" #fileUploadInput style="display: none;">
+        <mat-menu #emojiMenu class="emoji-menu">
+            <emoji-mart class="emoji-mart" (click) = "$event.stopPropagation()" 
+                class="emoji-picker"
+                [emojiSize]="15"
+                [isNative]="true"
+                [showPreview]="false"
+                [exclude]="['recent']"
+                [enableSearch]="false"
+                (emojiSelect)="addEmoji($event)" 
+                title="Choose your emoji">
+            </emoji-mart>
+        </mat-menu>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+.chat-box-header {
+    padding: 0 1rem;
+    .chat-avatar {
+        border-radius: 50%;
+        background-color: rgb(138, 138, 138);
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+        margin-right: .8rem;
+    }
+
+    .chat-title {
+        margin: 0;
+    }
+
+    .chat-settings-btn {
+        margin-left: auto;
+        border-radius: 50%;
+        padding: 8px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(55, 54, 54);
+        }
+    }
+}
+

@@ -1,0 +1,33 @@
+<app-chat-box 
+    [messageSendCallback]="createChat">
+    <div class="chat-box-header row center-v">
+        <span>To: </span>
+        <div class="input-wrapper"> 
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let user of toUsers" (removed)="removeUser(user)">
+                {{user.firstName + ' ' + user.lastName}}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+              <input
+                type="text"
+                placeholder="Search for a person..."
+                #searchInput
+                autocomplete="nope"
+                [matAutocomplete]="auto"
+                [(ngModel)]="searchInputValue"
+                (keyup)="handleSearchInputKeyUp()"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete">
+                <ng-container *ngFor="let foundUser of foundUsers">
+                    <mat-option [value]="foundUser" (click)="userSelected(foundUser)">
+                        {{foundUser.firstName + ' ' + foundUser.lastName}}
+                    </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+        </div>
+    </div>
+</app-chat-box>

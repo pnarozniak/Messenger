@@ -1,0 +1,23 @@
+$item-height: 65px;
+$item-padding: 10px;
+
+.user-in-list {
+    height: calc($item-height - 2 * $item-padding);
+    border-radius: 30px;
+    padding: 0 .8rem;
+    cursor: pointer;
+    outline: none;
+    &.active {
+        background-color: rgb(55, 54, 54);
+    }
+    &:hover {
+        background-color: rgb(55, 54, 54);
+    }
+    .user-name {
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-left: .8rem;
+    }
+}

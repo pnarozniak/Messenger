@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AlertsService } from 'src/app/core/services/alerts.service';
-import { AuthApiService } from '../../auth-api.service';
-import { RegisterRequestModel } from '../../auth.model';
-import { RegisterStep1InfoComponent } from './register-step1-info/register-step1-info.component';
-import { RegisterStep2InfoComponent } from './register-step2-info/register-step2-info.component';
+import { FormGroup } from '@angular/forms';
+import { RegisterStep1InfoComponent } from '../../components/register-step1-info/register-step1-info.component';
+import { RegisterStep2InfoComponent } from '../../components/register-step2-info/register-step2-info.component';
+import { RegisterRequest } from '../../models/register-request.model';
+import { AuthApiService } from '../../services/auth-api.service';
 
 @Component({
   selector: 'app-register',
@@ -16,12 +14,9 @@ export class RegisterComponent implements OnInit {
   @ViewChild(RegisterStep1InfoComponent) step1InfoComponent?: RegisterStep1InfoComponent;
   @ViewChild(RegisterStep2InfoComponent) step2InfoComponent?: RegisterStep2InfoComponent;
 
-  constructor(private authApiService: AuthApiService,
-    private router: Router,
-    private alertsService: AlertsService) { }
+  constructor(private authApiService: AuthApiService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   get step1InfoFormGroup() {
     return this.step1InfoComponent ? this.step1InfoComponent.fg : new FormGroup({});
@@ -38,7 +33,7 @@ export class RegisterComponent implements OnInit {
     this.step2InfoFormGroup.get('email')
       ?.setErrors(null);
 
-    const request : RegisterRequestModel = {
+    const request : RegisterRequest = {
       firstName: this.step1InfoFormGroup.get('firstName')?.value,
       lastName: this.step1InfoFormGroup.get('lastName')?.value,
       birthDate: this.step1InfoFormGroup.get('birthDate')?.value,
@@ -48,17 +43,9 @@ export class RegisterComponent implements OnInit {
 
     this.authApiService.register(request)
       .subscribe({
-        next: () => {
-          this.router.navigate(['/auth/login']);
-          this.alertsService.showSuccess('You have successfully registered! Please login.');
-        },
         error: ({status}) => {
-          console.log("No jest error")
-          if (status == 409) {
-            this.step2InfoFormGroup.get('email')
-              ?.setErrors({'409': true});
-          }
-        }
-      });
+          if (status == 409)
+            this.step2InfoFormGroup.get('email')?.setErrors({'409': true});        }
+      })
   }
 }

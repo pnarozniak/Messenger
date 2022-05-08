@@ -1,0 +1,16 @@
+<div [routerLink]="['/chat', chat.id]" [routerLinkActive]="['active-chat']" class="chat-in-list row center">
+    <img class="avatar medium"/>
+    <div class="chat-info col">
+        <span class="chat-name">
+            {{ chat.name }}
+        </span>
+        <div class="row last-message-wrapper">
+            <span class="last-message-text"> 
+               {{ chat.lastMessage.isRemoved ? 'Message removed.' : chat.lastMessage.text }}
+            </span>
+            <span class="last-message-send-date" *ngIf="chat.lastMessage.sendDate">
+                ○ {{ chat.lastActivity }}
+            </span>
+        </div>
+    </div>
+</div>

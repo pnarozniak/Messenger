@@ -3,7 +3,7 @@
     height: 100%;
 
     ::ng-deep mat-stepper {
-        background-color: black;
+        background-color: inherit;
 
         .mat-step-header,
         .mat-horizontal-content-container {

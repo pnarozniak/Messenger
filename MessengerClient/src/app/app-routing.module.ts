@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService } from './feature/auth/auth-guard.service';
-import { EmailVerificationComponent } from './feature/auth/pages/email-verification/email-verification.component';
-import { LoginComponent } from './feature/auth/pages/login/login.component';
-import { RegisterComponent } from './feature/auth/pages/register/register.component';
-import { ChatComponent } from './feature/chat/pages/chat/chat.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'auth/register', component: RegisterComponent },
-  { path: 'auth/email-verification', component: EmailVerificationComponent },
-  { path: 'chat', component: ChatComponent, canActivate: [AuthGuardService] },
+  { 
+    path: 'auth', 
+    loadChildren: () => import('./feature/auth/auth-routing.module').then(m => m.AuthRoutingModule) 
+  },
+  { 
+    path: 'chat', 
+    loadChildren: () => import('./feature/chat/chat-routing.module').then(m => m.ChatRoutingModule),
+    canActivate: [AuthGuard]
+  },
   { path: '', redirectTo: '/chat', pathMatch: 'full' },
 ];
 

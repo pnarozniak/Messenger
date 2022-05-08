@@ -1,0 +1,12 @@
+$panel-width: 300px;
+
+.wrapper {
+    width: $panel-width;
+    max-width: $panel-width;
+    height: 100%;
+    background-color: rgb(37, 36, 36);
+    .search-panel-wrapper {
+        padding: 1rem 1rem 0 1rem;
+        margin-bottom: 1rem;
+    }
+}
