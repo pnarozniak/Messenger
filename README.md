@@ -13,7 +13,7 @@
 
 ## Technologies
 * ASP.NET CORE 6.0 
-* AngularJS
+* Angular
 * Docker
 
 ## Authors
